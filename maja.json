@@ -1,1 +1,30 @@
+{
+  "pohikeel": "et",
+  "keeled": ["et", "ru", "en"],
+  "nimi": {
+    "et": "Maja nimi",
+    "ru": "Название",
+    "en": "House name"
+  },
+  "slogan": {
+    "et": "Lühike lause katusele.",
+    "ru": "Короткая фраза на крыше.",
+    "en": "A short line on the roof."
+  },
+  "sotsiaal": {
+    "facebook": "",
+    "instagram": ""
+  },
+  "jalg": {
+    "tekst": {
+      "et": "Broneeri. Kirjuta või helista.",
+      "ru": "Забронируй. Напиши или позвони.",
+      "en": "Book. Write or call."
+    },
+    "telefon": "",
+    "email": ""
+  },
+  "uksed": ["pallid", "maaling", "glitter"],
+  "allkorrus_toad": ["kingitused"]
+}
 
