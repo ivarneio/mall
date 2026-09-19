@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maja</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #2a1f18;
+      --muted: #6a5a50;
+      --paper: #fffaf4;
+      --card: #fff;
+      --line: #eadfd4;
+      --accent: #e25b3a;
+      --sky: #2f6f8f;
+      --dark: #2a1f18;
+      --jalg: 4.6rem;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      font-family: Nunito, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      padding-bottom: var(--jalg);
+    }
+    .katus {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      padding: .55rem 1rem;
+      background: var(--dark);
+      color: #f6eee2;
+    }
+    .katus .nimi {
+      font-weight: 800;
+      text-decoration: none;
+      color: inherit;
+      margin-right: auto;
+    }
+    .keeled button, .sots a {
+      background: none;
+      border: 0;
+      color: #f6eee2;
+      cursor: pointer;
+      font: inherit;
+      opacity: .65;
+      padding: .2rem .35rem;
+    }
+    .keeled button.on { opacity: 1; font-weight: 800; }
+    .sots { display: flex; gap: .15rem; }
+    .sots a { display: none; }
+    .sots a.nahtav { display: inline-flex; }
+    .sots svg { width: 1.25rem; height: 1.25rem; fill: currentColor; }
+    .katusealune { padding: 1.4rem 1rem 2rem; max-width: 980px; margin: 0 auto; }
+    h1 { font-size: clamp(1.8rem, 4vw + 1rem, 3rem); margin: 0 0 .35rem; }
+    .slogan { margin: 0 0 1.4rem; color: var(--muted); }
+    .uksed {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .7rem;
+    }
+    @media (max-width: 700px) {
+      .uksed { grid-template-columns: 1fr; }
+    }
+    .uks, .kingitus-uks, .pakett-kaart {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1rem 1.05rem;
+      cursor: pointer;
+      text-align: left;
+      font: inherit;
+      color: inherit;
+    }
+    .uks strong, .kingitus-uks strong { display: block; font-size: 1.05rem; }
+    .allkorrus { margin-top: 2.2rem; }
+    .allkorrus h2 { font-size: 1.05rem; margin: 0 0 .7rem; }
+    .paketiriba {
+      display: flex;
+      gap: .7rem;
+      overflow-x: auto;
+      padding-bottom: .4rem;
+      scroll-snap-type: x mandatory;
+    }
+    .pakett-kaart {
+      min-width: 210px;
+      scroll-snap-align: start;
+      flex: 0 0 auto;
+    }
+    .pakett-kaart img, .tuba-galerii img {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 10px;
+      display: block;
+      margin-bottom: .5rem;
+      background: var(--line);
+    }
+    .pakett-kaart .hind { color: var(--sky); font-weight: 800; }
+    .peida { display: none; }
+    .tuba, .pakett-sisse {
+      margin-top: 1.2rem;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.1rem 1.15rem 1.3rem;
+    }
+    .tuba h2, .pakett-sisse h2 { margin: 0 0 .5rem; }
+    .tuba p, .pakett-sisse p { color: var(--muted); white-space: pre-wrap; }
+    .tuba-galerii {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: .45rem;
+      margin-top: .9rem;
+    }
+    .tuba-galerii img { height: 140px; margin: 0; cursor: pointer; }
+    .teised { margin-top: 1.3rem; padding-top: .9rem; border-top: 1px solid var(--line); }
+    .teised h3 { font-size: .9rem; margin: 0 0 .55rem; }
+    .jalg {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      z-index: 40;
+      background: var(--dark);
+      color: #f6eee2;
+      padding: .7rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .35rem 1rem;
+      align-items: baseline;
+      font-size: .92rem;
+    }
+    .jalg a { color: #fff; font-weight: 800; }
+    .vaade { display: none; }
+    .vaade.sees { display: block; }
+    .sild { font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin: 0 0 .35rem; }
+    .tagasi {
+      background: none;
+      border: 0;
+      color: var(--sky);
+      font: inherit;
+      cursor: pointer;
+      padding: 0 0 .7rem;
+    }
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(20,12,8,.88);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 60;
+    }
+    .overlay.sees { display: flex; }
+    .overlay img { max-width: 92vw; max-height: 86vh; }
+    .overlay button {
+      position: absolute;
+      top: .7rem; right: .8rem;
+      background: none; border: 0; color: #fff;
+      font-size: 2rem; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header class="katus">
+    <a class="nimi" href="#" id="koju">Maja</a>
+    <div class="keeled" id="keeled"></div>
+    <div class="sots" id="sots">
+      <a id="fb" aria-label="Facebook" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M13.5 9H16V6h-2.5C11.6 6 11 7.2 11 8.8V9H9v3h2v6h3v-6h2.2l.3-3H14V8.7c0-.4.2-.7.7-.7z"/></svg>
+      </a>
+      <a id="ig" aria-label="Instagram" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm10 2H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm-5 3.2A3.8 3.8 0 1 1 8.2 12 3.8 3.8 0 0 1 12 8.2zm0 1.6A2.2 2.2 0 1 0 14.2 12 2.2 2.2 0 0 0 12 9.8zM17.2 6.6a.9.9 0 1 1-.9.9.9.9 0 0 1 .9-.9z"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <main class="katusealune">
+    <section id="peal" class="vaade sees">
+      <h1 id="pealkiri">Maja</h1>
+      <p class="slogan" id="slogan"></p>
+      <p class="sild" id="sild-uksed"></p>
+      <div class="uksed" id="uksed"></div>
+      <div class="allkorrus">
+        <h2 id="sild-paketid"></h2>
+        <div class="paketiriba" id="paketiriba"></div>
+      </div>
+      <div class="allkorrus" id="kingitused-pesa"></div>
+    </section>
+
+    <section id="tuba-vaade" class="vaade">
+      <button class="tagasi" id="tagasi-tuba" type="button"></button>
+      <article class="tuba">
+        <h2 id="tuba-pealkiri"></h2>
+        <p id="tuba-jutt"></p>
+        <div class="tuba-galerii" id="tuba-galerii"></div>
+      </article>
+    </section>
+
+    <section id="pakett-vaade" class="vaade">
+      <button class="tagasi" id="tagasi-pakett" type="button"></button>
+      <article class="pakett-sisse">
+        <h2 id="pakett-pealkiri"></h2>
+        <p id="pakett-meta"></p>
+        <p id="pakett-jutt"></p>
+        <p class="hind" id="pakett-hind"></p>
+        <div class="teised">
+          <h3 id="sild-teised"></h3>
+          <div class="paketiriba" id="teised-paketid"></div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="jalg" id="jalg"></footer>
+  <div class="overlay" id="overlay">
+    <button type="button" id="overlay-sulge">×</button>
+    <img alt="" id="overlay-pilt">
+  </div>
+
+  <script>
+    const SILD = {
+      et: { uksed: "Teenused", paketid: "Paketid", kingitused: "Kingitused", teised: "Teised paketid", tagasi: "Tagasi majja" },
+      ru: { uksed: "Услуги", paketid: "Пакеты", kingitused: "Подарки", teised: "Другие пакеты", tagasi: "Назад в дом" },
+      en: { uksed: "Services", paketid: "Packages", kingitused: "Gifts", teised: "Other packages", tagasi: "Back to the house" }
+    };
+
+    let maja, paketid = [], toad = {}, keel = "et";
+
+    const $ = (id) => document.getElementById(id);
+    const t = (obj) => (obj && (obj[keel] || obj.et || "")) || "";
+
+    async function loe(url) {
+      const r = await fetch(url);
+      if (!r.ok) throw new Error(url);
+      return r.json();
+    }
+
+    async function kaivita() {
+      maja = await loe("maja.json");
+      keel = maja.pohikeel || "et";
+      const p = await loe("paketid/paketid.json");
+      paketid = p.paketid || [];
+      const ids = [...(maja.uksed || []), ...(maja.allkorrus_toad || [])];
+      await Promise.all(ids.map(async (id) => {
+        toad[id] = await loe("toad/" + id + "/tuba.json");
+      }));
+      joonistaKatus();
+      joonistaPeal();
+      joonistaJalg();
+    }
+
+    function joonistaKatus() {
+      $("koju").textContent = t(maja.nimi);
+      document.title = t(maja.nimi);
+      $("keeled").innerHTML = (maja.keeled || ["et"]).map((k) =>
+        `<button type="button" data-keel="${k}" class="${k === keel ? "on" : ""}">${k.toUpperCase()}</button>`
+      ).join("");
+      $("keeled").onclick = (e) => {
+        const b = e.target.closest("button");
+        if (!b) return;
+        keel = b.dataset.keel;
+        joonistaKatus();
+        joonistaPeal();
+        joonistaJalg();
+        if ($("tuba-vaade").classList.contains("sees")) naitaTuba($("tuba-vaade").dataset.id);
+        if ($("pakett-vaade").classList.contains("sees")) naitaPakett($("pakett-vaade").dataset.id);
+      };
+      const fb = maja.sotsiaal && maja.sotsiaal.facebook;
+      const ig = maja.sotsiaal && maja.sotsiaal.instagram;
+      $("fb").href = fb || "#";
+      $("ig").href = ig || "#";
+      $("fb").classList.toggle("nahtav", !!fb);
+      $("ig").classList.toggle("nahtav", !!ig);
+    }
+
+    function joonistaPeal() {
+      $("pealkiri").textContent = t(maja.nimi);
+      $("slogan").textContent = t(maja.slogan);
+      $("sild-uksed").textContent = SILD[keel].uksed;
+      $("sild-paketid").textContent = SILD[keel].paketid;
+      $("uksed").innerHTML = (maja.uksed || []).map((id) => {
+        const u = toad[id];
+        return `<button class="uks" type="button" data-tuba="${id}"><strong>${t(u.pealkiri)}</strong></button>`;
+      }).join("");
+      $("paketiriba").innerHTML = paketiKaardid(paketid);
+      const king = (maja.allkorrus_toad || [])[0];
+      if (king && toad[king]) {
+        $("kingitused-pesa").innerHTML =
+          `<h2>${SILD[keel].kingitused}</h2>` +
+          `<button class="kingitus-uks" type="button" data-tuba="${king}"><strong>${t(toad[king].pealkiri)}</strong></button>`;
+      }
+    }
+
+    function paketiKaardid(list) {
+      return list.map((p) => {
+        const img = p.pilt ? `<img src="${p.pilt}" alt="">` : "";
+        return `<button class="pakett-kaart" type="button" data-pakett="${p.id}">${img}<strong>${t(p.pealkiri)}</strong><div class="hind">${p.hind || ""}</div></button>`;
+      }).join("");
+    }
+
+    function naita(mis) {
+      ["peal", "tuba-vaade", "pakett-vaade"].forEach((id) => {
+        $(id).classList.toggle("sees", id === mis);
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function naitaTuba(id) {
+      const u = toad[id];
+      if (!u) return;
+      $("tuba-vaade").dataset.id = id;
+      $("tagasi-tuba").textContent = SILD[keel].tagasi;
+      $("tuba-pealkiri").textContent = t(u.pealkiri);
+      $("tuba-jutt").textContent = t(u.jutt);
+      $("tuba-galerii").innerHTML = (u.pildid || []).map((src) =>
+        `<img src="toad/${id}/${src}" alt="" data-suur="toad/${id}/${src}">`
+      ).join("");
+      naita("tuba-vaade");
+    }
+
+    function naitaPakett(id) {
+      const p = paketid.find((x) => x.id === id);
+      if (!p) return;
+      $("pakett-vaade").dataset.id = id;
+      $("tagasi-pakett").textContent = SILD[keel].tagasi;
+      $("pakett-pealkiri").textContent = t(p.pealkiri);
+      $("pakett-meta").textContent = t(p.meta);
+      $("pakett-jutt").textContent = t(p.kirjeldus);
+      $("pakett-hind").textContent = p.hind || "";
+      $("sild-teised").textContent = SILD[keel].teised;
+      $("teised-paketid").innerHTML = paketiKaardid(paketid.filter((x) => x.id !== id));
+      naita("pakett-vaade");
+    }
+
+    function joonistaJalg() {
+      const tel = maja.jalg.telefon || "";
+      const mail = maja.jalg.email || "";
+      $("jalg").innerHTML =
+        `<span>${t(maja.jalg.tekst)}</span>` +
+        (tel ? `<a href="tel:${tel.replace(/\\s/g, "")}">${tel}</a>` : "") +
+        (mail ? `<a href="mailto:${mail}">${mail}</a>` : "");
+    }
+
+    document.addEventListener("click", (e) => {
+      const uks = e.target.closest("[data-tuba]");
+      if (uks) { naitaTuba(uks.dataset.tuba); return; }
+      const pak = e.target.closest("[data-pakett]");
+      if (pak) { naitaPakett(pak.dataset.pakett); return; }
+      const pilt = e.target.closest("#tuba-galerii img");
+      if (pilt) {
+        $("overlay-pilt").src = pilt.dataset.suur;
+        $("overlay").classList.add("sees");
+      }
+    });
+    $("koju").onclick = (e) => { e.preventDefault(); naita("peal"); };
+    $("tagasi-tuba").onclick = () => naita("peal");
+    $("tagasi-pakett").onclick = () => naita("peal");
+    $("overlay-sulge").onclick = () => $("overlay").classList.remove("sees");
+    $("overlay").onclick = (e) => { if (e.target.id === "overlay") $("overlay").classList.remove("sees"); };
+
+    kaivita().catch((err) => { document.body.insertAdjacentHTML("beforeend", "<p style='padding:1rem'>Ei saanud maja laadida.</p>"); console.error(err); });
+  </script>
+</body>
+</html>
