@@ -1,0 +1,10 @@
+{
+  "id": "teenus-1",
+  "pealkiri": {
+    "et": "Esimene teenus",
+    "ru": "Услуга 1",
+    "en": "Service 1"
+  },
+  "jutt": {"et": "", "ru": "", "en": ""},
+  "pildid": []
+}
